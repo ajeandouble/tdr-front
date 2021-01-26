@@ -1,0 +1,11 @@
+/* RESET */
+
+.card {
+  border: 3px solid lightblue;
+  border-radius: 2px;
+  background-color: yellow;
+}
+
+.card.liked {
+  color: red;
+}
