@@ -3,6 +3,14 @@ import keys from '../config/keys';
 const { server_url } = keys;
 
 const Matches = ({matches, setMatches, deck }) => {
+    const [socket, setSocket] = useState(null);
+  
+    useEffect(() => {
+      if (!socket) {
+        const newSocket = new WebSocket('ws://localhost:8080'); 
+        setSocket(newSocket);
+      }
+      }, []);
 
     useEffect(() => {
       console.log('fetching...')
@@ -32,14 +40,27 @@ const Matches = ({matches, setMatches, deck }) => {
             .catch(error => {
               console.log(error);
             });
-      console.log('deck updated')
     }
     , [deck]);
-  
+
+    function sendMessage( event, match) {
+      event.preventDefault();
+      if (socket) {
+        socket.send(`Send blablabla to ${match.user_id}`);
+      }
+    }
+
     return (
       <>
         <h3>Matches: </h3>
-        <div className="matches">{JSON.stringify(matches)}</div>
+        <div className="matches">{matches.map((match) => {
+      
+            return <>
+              <button onClick={(event) => sendMessage(event, match)}>Test</button>
+              {JSON.stringify(match)}
+              </>
+          })
+        }</div>
       </>
     )
   }

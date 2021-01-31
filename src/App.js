@@ -13,6 +13,7 @@ function App() {
 
   useEffect(() => {
     if (authentication !== undefined) return ;
+    console.log(`${server_url}/auth/login/success`);
     fetch(`${server_url}/auth/login/success`, {
       method: "GET",
       credentials: "include",
@@ -31,11 +32,12 @@ function App() {
         if (responseJson.success) {
           setAuthentication({ authenticated: true, response: responseJson })
         }
-        console.log(responseJson);  
+        console.log(responseJson);
       })
       .catch(error => {
         console.log(error);
       });
+
   }, []);
 
   console.log(document.cookie)
