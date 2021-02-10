@@ -9,3 +9,18 @@
 .card.liked {
   color: red;
 }
+
+.message {
+  background-color: aliceblue;
+  width: 100%;
+}
+
+.message.sent {
+  background-color: aquamarine;
+  text-align: right;
+}
+
+.message.received {
+  background-color: antiquewhite;
+  float: right;
+}
