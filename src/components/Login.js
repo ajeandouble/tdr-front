@@ -5,23 +5,20 @@ const { server_url } = keys;
 const Login = () => {
 	return (
 		<div className="login">
-			<form action={`${server_url}/auth/login`} method="post">
-				<div>
-					<label>Username:</label>
-					<input type="text" name="username"/>
+			<form className="regular" action={`${server_url}/auth/login`} method="post">
+				<div className="username">
+					<label className="username__label">Username:</label>
+					<input className="username__input" type="text" name="username" />
 				</div>
-				<div>
-					<label>Password:</label>
-					<input type="password" name="password"/>
+				<div className="password">
+					<label className="password__label">Password:</label>
+					<input className="password__input" type="password" name="password"/>
 				</div>
-				<div>
-					<input type="submit" value="Log In"/>
+				<div className="submit">
+					<input className="submit__input" type="submit" value="Log In"/>
 				</div>
 			</form>
-			<a class="fb-login-button"
-			className=""
-			href={`${server_url}/auth/facebook`}
-			>Login</a>
+			<a className="facebook" href={`${server_url}/auth/facebook`}>Login with Facebook</a>
 	</div>
 	);
 };
