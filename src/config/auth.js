@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import Loading from '../components/Loading';
 import keys from './keys'
 const { server_url } = keys;
 
 export const PrivateRoute = ({component: Component, ...rest}) => {
     const [isAuth, setIsAuth] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         console.log('auth useEffect()')
@@ -14,8 +15,6 @@ export const PrivateRoute = ({component: Component, ...rest}) => {
             console.log('should be triggered')
             return ;
         }
-        if (!isLoading)
-            setIsLoading(true);
         fetch(`${server_url}/auth/login/success`, {
                 method: "GET",
                 credentials: "include",
@@ -32,7 +31,6 @@ export const PrivateRoute = ({component: Component, ...rest}) => {
         .then(responseJson => {
             if (responseJson.success)   setIsAuth(true);
             console.log(responseJson);
-            setIsLoading(false);
         })
         .catch(error => {
             console.log(error);
@@ -46,7 +44,7 @@ export const PrivateRoute = ({component: Component, ...rest}) => {
         // Otherwise, redirect the user to /signin page
         <Route {...rest} render={props => (
             isLoading ?
-            'Loading' :
+            <Loading /> :
                 isAuth ?
                     <Component {...props} />
                 : <Redirect to="/" />

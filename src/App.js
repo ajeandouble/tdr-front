@@ -9,14 +9,23 @@ import { PrivateRoute } from './config/auth'
 
 const { server_url } = keys
 
-function Home() {
+function NotFound() {
   return (
-    <>
-      Home:
-      <Link to="/login">Login</Link>
-    </>
+    <div className="notFound">
+      <p className="notFound__p">Not found</p>
+    </div>
   )
 }
+
+function Home() {
+  return (
+    <div className="home">
+      <h1 className="home__title">Node/ReactJS Dating App</h1>
+      <Link to="/login"><button className="home__login__button">Login</button></Link>
+    </div>
+  )
+}
+
 function App() {
   console.log(App.name, server_url);
   console.log(process.env);
@@ -32,6 +41,7 @@ function App() {
         <Route exact={true} path="/"><Home /></Route>
         <Route path="/login"><Login /></Route>
         <PrivateRoute path="/dashboard" component={Dashboard} />
+        <Route path="/404"><NotFound /></Route>
       </Router>
     </div>
   );

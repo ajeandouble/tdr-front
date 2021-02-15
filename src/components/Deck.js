@@ -14,6 +14,8 @@ const Deck = () => {
 
     console.log(deck);
     console.log(matches);
+
+    // get Deck
     useEffect(() => {
       console.log('fetching...')
         fetch(`${server_url}/api/getDeck`, {
@@ -51,8 +53,6 @@ const Deck = () => {
     return (
         <>
           <Cards deck={deck} setDeck={setDeck} />
-          <Likes likes={likes} setLikes={setLikes} />
-          <Matches matches={matches} setMatches={setMatches} deck={deck} />
         </>
     )
 }

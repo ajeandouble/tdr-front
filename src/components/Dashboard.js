@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'; 
 import Deck from './Deck';
+import Matches from './Matches'
 import keys from '../config/keys';
+import Loading from './Loading';
 const { server_url } = keys;
 
 const RegisterActiveUserProfile = (props) => {
@@ -106,18 +109,37 @@ const Dashboard = () => {
         });
     }, [registered]);
 
-    return (<>
+    return (
+      <Router>
         <header>
         <div>
-            <a href={`${server_url}/auth/logout`}>logout</a>
+            <a className="logout__button" href={`${server_url}/auth/logout`}>Logout</a>
         </div>
         </header>
         <main>
-            {activeUserProfile ? <><ShowActiveUserProfille activeUserInfo={activeUserProfile} /><Deck /></> :
-              registered === undefined ? <div>loading</div> : null}
+            {activeUserProfile ?
+              <>
+                <Link to="/dashboard/profile">Profile</Link>
+                <Link to="/dashboard/deck">Deck</Link>
+
+                <Route path="/dashboard/profile">
+                  <ShowActiveUserProfille activeUserInfo={activeUserProfile} />
+                </Route>
+                <Route path="/dashboard/deck">
+                  <Deck />
+                </Route>
+                <Route path="/dashboard/matches">
+                  <Matches />
+                </Route>
+                <Route exact path="/dashboard">
+                    <Matches />
+                    <Deck /><p>+d</p>
+                </Route>
+              </> :
+              registered === undefined ? <Loading /> : null}
             {registered === false ? <RegisterActiveUserProfile setRegistered={setRegistered} /> : null}
         </main>       
-    </>)
+    </Router>)
 }
 
 export default Dashboard;
