@@ -131,7 +131,9 @@ const Matches = () => {
               <Link to={`/dashboard/matches/${match.user_id}`}>{match.displayName}{messages.get(match.user_id) ? messages.get(match.user_id).length : null}</Link>
 
               <Route exact path="/dashboard/matches/:id">
-                <Profile match={match} messages={messages} input={input} setInput={setInput} setMessages={setMessages} sendMessage={sendMessage}/>
+                <div className="dashboard__right-pan">
+                  <Profile match={match} messages={messages} input={input} setInput={setInput} setMessages={setMessages} sendMessage={sendMessage}/>
+                </div>
               </Route>
                 
               </>

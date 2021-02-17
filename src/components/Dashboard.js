@@ -113,29 +113,52 @@ const Dashboard = () => {
       <Router>
         <header>
         <div>
-            <a className="logout__button" href={`${server_url}/auth/logout`}>Logout</a>
+            <a className="button--logout dashboard__logout" href={`${server_url}/auth/logout`}>Logout</a>
         </div>
         </header>
-        <main>
+        <main className="dashboard__main">
             {activeUserProfile ?
-              <>
-                <Link to="/dashboard/profile">Profile</Link>
-                <Link to="/dashboard/deck">Deck</Link>
-
+              <React.Fragment>
                 <Route path="/dashboard/profile">
-                  <ShowActiveUserProfille activeUserInfo={activeUserProfile} />
+                  <div className="dashboard__left-pan">
+                    <Link to="/dashboard/deck">Deck</Link>
+                  </div>
+                  <div className="dashboard__right-pan">
+                    <ShowActiveUserProfille activeUserInfo={activeUserProfile} />
+                  </div>
                 </Route>
-                <Route path="/dashboard/deck">
-                  <Deck />
-                </Route>
+
                 <Route path="/dashboard/matches">
-                  <Matches />
-                </Route>
-                <Route exact path="/dashboard">
+                  <div className="dashboard__left-pan">
+                    <Link to="/dashboard/deck">Deck</Link>
                     <Matches />
-                    <Deck /><p>+d</p>
+                    Aaa
+                  </div>
                 </Route>
-              </> :
+
+
+                <Route path="/dashboard/deck">
+                  <div className="dashboard__left-pan">
+                    <Link to="/dashboard/profile">Profile</Link>
+                    <Matches />
+                  </div>
+                  <div className="dashboard__right-pan">
+                    <Deck />
+                  </div>
+                </Route>
+                {/* TODO: Redundant? */}
+                <Route exact path="/dashboard">
+                  <div className="dashboard__left-pan">
+                    <Link to="/dashboard/profile">Profile</Link>
+                    <Matches />
+                  </div>
+                  <div className="dashboard__right-pan">
+                    <Deck />
+                  </div>
+                  WHAT
+                </Route>
+
+              </React.Fragment>  :
               registered === undefined ? <Loading /> : null}
             {registered === false ? <RegisterActiveUserProfile setRegistered={setRegistered} /> : null}
         </main>       

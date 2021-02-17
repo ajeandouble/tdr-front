@@ -26,12 +26,88 @@ time, mark, audio, video {
   --red: #EE3D5B;
   --violet: #BF4389;
   --purple: #7B5295;
-
+  --blue: #3F537F;
+  --charcoal: #2F4858;
+  --grey: #79736C;
+  --light-grey: #cecece;
+  --warning: #D67B13;
+  --danger: #EA4235;
+  --success: #559449;
+  --white : #FFFFFF;
 }
+
+html { font-size: 11px; }
+
+@media (max-width: 900px) {
+  html { font-size: 13px; }
+}
+@media (max-width: 400px) {
+  html { font-size: 13px; }
+}
+
+h1 { font-size: 3.6rem; }
+h2 { font-size: 3.2rem; }
+h3 { font-size: 3rem; }
+h4 { font-size: 2.4rem; }
+h5 { font-size: 2rem; }
+h6 { font-size: 1.8rem; }
 
 body {
   font-family: 'Roboto', sans-serif;
+  font-size: 1.8rem;
 }
+
+.button--default {
+  background-color: var(--white);
+  font-size: 1.75rem;
+  color: var(--charcoal);
+  padding: 0.3rem 0.9rem 0.3rem 0.9rem;
+  border-radius: 0.3rem;
+  transition-duration: 0.25s;
+  height: 2.25rem;
+}
+
+.button--default:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button--submit {
+  background-color: var(--charcoal);
+  color: var(--light-grey);   
+  border: 0;
+  font-size: 1.75rem;
+  padding: 0.3rem 0.9rem 0.3rem 0.9rem;
+  border-radius: 0.3rem;
+  transition-duration: 0.25s;
+  height: 3.2rem;
+}
+
+.button--submit:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button--logout {
+  background-color: var(--charcoal);
+  color: var(--light-grey);   
+  border: 0;
+  font-size: 1.75rem;
+  padding: 0.3rem 0.9rem 0.3rem 0.9rem;
+  border-radius: 0.3rem;
+  transition-duration: 0.25s;
+  z-index: 100;
+  top: 1%;
+  right: 2%;
+  position: fixed;
+}
+
+.button--logout:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button--warning {
+
+}
+
 /* Landing page */
 
 .home {
@@ -40,27 +116,115 @@ body {
   height: 100vh;
 }
 
-.home__login__button {
+#home__login__button {
   position: fixed;
-  top: 1%;
-  right: 1%;
+  top: 2%;
+  right: 1.5%;
   text-transform: uppercase;
-  
-  border: 0px;
-  background-color: white;
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
 
+#home__login__button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
 .home__title {
-  font-weight: 800;
-  font-size: 120px;
+  font-weight: 400;
+  opacity: 90%;
   font-style: italic;
-  color: rgb(255, 255, 255);
+  font-size: 6rem;
+  width: 100%;
   text-align: center;
-  position: relative;
-  top: 30%;
+  position: absolute;
+  color: rgb(255, 255, 255);
+  margin-top: 15rem;
 }
+
+.home__title span {
+  user-select: none;
+  padding: 1rem;
+}
+
+/* LOGIN PAGE */
+
+.login {
+  background-image: linear-gradient(to bottom right, var(--red), var(--violet));
+  height: 100vh;
+}
+
+.login--container {
+  width: 40rem;
+  margin-left: auto;
+  margin-right: auto; 
+  z-index: 100;
+  position: relative;
+}
+
+.login--card {
+  background-color: white;
+  border-radius: 3px;
+  top: 10vh;
+  padding: 3rem;
+  position: relative;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.login--card form div {
+  margin-top: 1rem;
+  position: static;
+}
+
+.login--card form .submit {
+  float: right;
+}
+
+.login--card form {
+
+}
+.login--card form label {
+  padding-right: 2rem;
+  color: var(--charcoal);
+}
+
+.login--card form input[type='text'], .login--card form input[type='password'] {
+  border: 1.5px solid var(--light-grey);
+  background: transparent;
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 300;
+  text-align: left;
+  border-radius: 3px;
+  box-shadow: none;
+  position: relative;
+  top: -0.1rem;
+  width: 99%;
+  height: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.login--card .submit__input:hover {
+  cursor: pointer;
+}
+
+.login--card .facebook {
+  text-align: center;
+}
+
+/* DASHBOARD */
+
+.dashboard__left-pan {
+  background-color: red;
+  width: 25rem;
+  height: 100vh;
+  float: left;
+}
+
+.dashboard__right-pan {
+  background-color: blue;
+  margin-left: 28rem;
+  position: relative;
+}
+
+/* CARD */
 
 .card {
   border: 3px solid lightblue;

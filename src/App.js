@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css';
+import Home from './components/Home';
 import Login from  './components/Login';
 import Dashboard from './components/Dashboard';
 import keys from './config/keys'
@@ -13,15 +14,6 @@ function NotFound() {
   return (
     <div className="notFound">
       <p className="notFound__p">Not found</p>
-    </div>
-  )
-}
-
-function Home() {
-  return (
-    <div className="home">
-      <h1 className="home__title">Node/ReactJS Dating App</h1>
-      <Link to="/login"><button className="home__login__button">Login</button></Link>
     </div>
   )
 }
