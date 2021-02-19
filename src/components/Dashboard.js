@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'; 
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from 'react-router-dom'; 
 import Deck from './Deck';
-import Matches from './Matches'
+import MatchesList from './Matches';
+import Profile from './Profile';
 import keys from '../config/keys';
 import Loading from './Loading';
 const { server_url } = keys;
@@ -79,8 +80,17 @@ const ShowActiveUserProfille = (props) => {
 }
 
 const Dashboard = () => {
+  // Profile hooks
   const [activeUserProfile, setActiveUserProfile] = useState(undefined)
   const [registered, setRegistered] = useState(undefined);
+
+  // matches
+  const [matches, setMatches] = useState(undefined);
+
+  // messaging
+  const [socket, setSocket] = useState(null);
+  const [messages, setMessages] = useState(new Map());
+  const [input, setInput] = useState({});
 
     useEffect(() => {
       fetch(`${server_url}/api/userInfo`, {
@@ -109,6 +119,86 @@ const Dashboard = () => {
         });
     }, [registered]);
 
+    useEffect(() => {
+      console.log('fetching matches...')
+        fetch(`${server_url}/api/getMatches`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": true
+            },
+          })
+            .then(response => {
+              if (response.status !== 201 && response.status !== 401) {
+                throw Error('Can\'t get matches');
+              }
+              return response.json();
+            })
+            .then(responseJSON => {
+              if (responseJSON.success === false) {
+                throw Error(responseJSON.message)
+              }
+              const { data } = responseJSON;
+              const newInput = {}
+              console.log(data)
+              for (const i in data) {
+                newInput[data[i].user_id] = '';
+              }
+              console.log(newInput)
+              setInput(newInput);
+              setMatches(data);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+    }
+    , []);
+
+    function sendMessage( event, match) {
+      event.preventDefault();
+  
+      const message = input[match.user_id]
+      if (!message.length)
+        return ;
+      const payload ={message: message, destination: match.user_id}
+      if (socket) {
+        socket.send(JSON.stringify(payload));
+        const newMessages = new Map(messages);
+        if (!newMessages.get(match.user_id)) {
+          newMessages.set(match.user_id, [{type: 'sent', message: message}])
+        }
+        else {
+          const messagesFrom = newMessages.get(match.user_id);
+          newMessages.set(match.user_id, [...messagesFrom, {type: 'sent', message: message}]);
+        }
+        setMessages(messages => newMessages);
+      }
+    }
+
+    useEffect(() => {
+      if (!socket) {
+        const newSocket = new WebSocket('ws://localhost:8080'); 
+        setSocket(newSocket);
+
+        newSocket.addEventListener('message', function (event) {
+          const data = JSON.parse(event.data);
+          console.log('Message from server ', data);
+
+          setMessages(messages => {
+            const messagesFrom = messages.get(data.from);
+            const newMessages = new Map(messages); //
+              if (!messagesFrom) newMessages.set(data.from, [{type: 'received', message: data.message}]);
+              else  newMessages.set(data.from, [...messagesFrom, {type: 'received', message: data.message}]);
+            console.log(newMessages)
+            return newMessages
+          });
+        });
+      }
+
+    }, []);
+  
     return (
       <Router>
         <header>
@@ -128,35 +218,33 @@ const Dashboard = () => {
                   </div>
                 </Route>
 
-                <Route path="/dashboard/matches">
+                <Route path="/dashboard/matches/:id?">
                   <div className="dashboard__left-pan">
+                    <Link to="/dashboard/profile">Profile</Link>
                     <Link to="/dashboard/deck">Deck</Link>
-                    <Matches />
-                    Aaa
+                    <MatchesList matches={matches} messages={messages} />
+                    {/* <Profile /> */}
                   </div>
+                  <div className="dashboard__right-pan">
+                    {matches ? 
+                      <Profile matches={matches} messages={messages} input={input} setInput={setInput} setMessages={setMessages} sendMessage={sendMessage}/>
+                      : <Loading />}
+                    </div>
+                  <span>/matches/:id?</span>
                 </Route>
 
 
-                <Route path="/dashboard/deck">
+                <Route exact path={["/dashboard/deck", "/dashboard"]} >
                   <div className="dashboard__left-pan">
                     <Link to="/dashboard/profile">Profile</Link>
-                    <Matches />
+                    <MatchesList matches={matches} messages={messages} />
                   </div>
                   <div className="dashboard__right-pan">
                     <Deck />
                   </div>
+                  <span>/deck</span>
                 </Route>
-                {/* TODO: Redundant? */}
-                <Route exact path="/dashboard">
-                  <div className="dashboard__left-pan">
-                    <Link to="/dashboard/profile">Profile</Link>
-                    <Matches />
-                  </div>
-                  <div className="dashboard__right-pan">
-                    <Deck />
-                  </div>
-                  WHAT
-                </Route>
+                
 
               </React.Fragment>  :
               registered === undefined ? <Loading /> : null}
