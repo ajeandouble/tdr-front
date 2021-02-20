@@ -9,15 +9,19 @@ const MatchesList = ({ matches, messages }) => {
   
     return (
       <>
-        <h3>Matches list: </h3>
-        <div className="matches">{matches && matches.map((match) => {
+        <div className="matches-list">
+          {matches && matches.map((match) => {
 
-            return <>
-
-              <Link to={`/dashboard/matches/${match.user_id}`}>{match.displayName}{messages.get(match.user_id) ? messages.get(match.user_id).length : null}</Link>
-              </>
+            return (
+              <Link className="matches-list__match" to={`/dashboard/matches/${match.user_id}`}>
+                <img className="matches-list__img"alt="" src="https://professionnels.tarkett.fr/media/img/M/TH_3917011_3707003_3708011_3912011_3914011_800_800.jpg" />
+                {messages.get(match.user_id) && messages.get(match.user_id).length ? <div className="matches-list__new-msg" /> : <null />}
+                <Link className="matches-list__link" to={`/dashboard/matches/${match.user_id}`}>{match.displayName}{messages.get(match.user_id) ? <span>({messages.get(match.user_id).length})</span> : null}</Link>
+              </Link>
+            );
           })
-        }</div>
+        }
+        </div>
       </>
     )
   }

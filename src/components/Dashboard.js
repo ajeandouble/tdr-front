@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, useParams } from 'react-router-dom'; 
 import Deck from './Deck';
 import MatchesList from './Matches';
-import Profile from './Profile';
+import Chat from './Chat';
 import keys from '../config/keys';
 import Loading from './Loading';
+import getAge from 'get-age';
 const { server_url } = keys;
 
 const RegisterActiveUserProfile = (props) => {
@@ -72,11 +73,28 @@ const RegisterActiveUserProfile = (props) => {
   )
 }
 
-const ShowActiveUserProfille = (props) => {
+function ActiveUserProfile({ activeUserInfo }) {
+  let profilePic = activeUserInfo.pics && activeUserInfo.pics.__proto__ === Array.prototype
+    && activeUserInfo.pics[0] ? activeUserInfo.pics[0] : null;
+
+  const { displayName, birthDate, bio } = activeUserInfo;
+
   return (
-    <div className="profileInfo">
-      {JSON.stringify(props.activeUserInfo)}
-    </div>);
+    <React.Fragment>
+      <div>
+        <a className="button--logout dashboard__logout" href={`${server_url}/auth/logout`}>Logout</a>
+      </div>
+      <div className="user-profile">
+        <article className="user-profile__article">
+          <img className="user-profile__img" src={profilePic}  />
+          <h4 className="user-profile__display-name">{displayName}</h4>
+          <h4 className="user-profile__age">{getAge(birthDate)}</h4>
+          <hr />
+          <p className="user-profile__bio">{bio}</p>
+        </article>
+      </div>
+    </React.Fragment>
+    );
 }
 
 const Dashboard = () => {
@@ -202,41 +220,43 @@ const Dashboard = () => {
     return (
       <Router>
         <header>
-        <div>
-            <a className="button--logout dashboard__logout" href={`${server_url}/auth/logout`}>Logout</a>
-        </div>
         </header>
         <main className="dashboard__main">
             {activeUserProfile ?
               <React.Fragment>
                 <Route path="/dashboard/profile">
                   <div className="dashboard__left-pan">
-                    <Link to="/dashboard/deck">Deck</Link>
+                    <div className="dashboard__left-pan__top">
+                      <Link className="dashboard__left-pan__top__link" to="/dashboard/deck">Deck</Link>
+                    </div>
                   </div>
                   <div className="dashboard__right-pan">
-                    <ShowActiveUserProfille activeUserInfo={activeUserProfile} />
+                    <ActiveUserProfile activeUserInfo={activeUserProfile} />
                   </div>
                 </Route>
 
                 <Route path="/dashboard/matches/:id?">
                   <div className="dashboard__left-pan">
-                    <Link to="/dashboard/profile">Profile</Link>
-                    <Link to="/dashboard/deck">Deck</Link>
-                    <MatchesList matches={matches} messages={messages} />
+                    <div className="dashboard__left-pan__top">
+                      <Link className="dashboard__left-pan__top__link" to="/dashboard/profile">Profile</Link>
+                      <Link className="dashboard__left-pan__top__link" to="/dashboard/deck">Deck</Link>
+                    </div>
+                  <MatchesList matches={matches} messages={messages} />
                     {/* <Profile /> */}
                   </div>
                   <div className="dashboard__right-pan">
                     {matches ? 
-                      <Profile matches={matches} messages={messages} input={input} setInput={setInput} setMessages={setMessages} sendMessage={sendMessage}/>
+                      <Chat matches={matches} messages={messages} input={input} setInput={setInput} setMessages={setMessages} sendMessage={sendMessage}/>
                       : <Loading />}
                     </div>
-                  <span>/matches/:id?</span>
                 </Route>
 
 
                 <Route exact path={["/dashboard/deck", "/dashboard"]} >
                   <div className="dashboard__left-pan">
-                    <Link to="/dashboard/profile">Profile</Link>
+                    <div className="dashboard__left-pan__top">
+                      <Link className="dashboard__left-pan__top__link" to="/dashboard/profile">Profile</Link>
+                    </div>
                     <MatchesList matches={matches} messages={messages} />
                   </div>
                   <div className="dashboard__right-pan">
