@@ -7,6 +7,7 @@ import Login from  './components/Login';
 import Dashboard from './components/Dashboard';
 import keys from './config/keys'
 import { PrivateRoute } from './config/auth'
+import Loading from './components/Loading';
 
 const { server_url } = keys
 

@@ -38,7 +38,7 @@ export default function Chat({ matches, messages, input, setInput, setMessages, 
             <div className="chat-box__messages">
                 {messages.get(match.user_id) ?
                 messages.get(match.user_id).map(value => 
-                    <div className={`message ${value.type}`}>{value.message}</div>
+                    <div className={`message ${value.type}`}><span className={`message ${value.type}__span`}>{value.message}</span></div>
                 )
                 : <></>}
             </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Likes from './Likes';
 import Matches from './Matches';
-import Cards from './Cards';
+import Card from './Card';
 import keys from '../config/keys';
 const { server_url } = keys;
 
@@ -52,7 +52,10 @@ const Deck = () => {
     , []);
     return (
         <>
-          <Cards deck={deck} setDeck={setDeck} />
+          {deck[0] ?
+            <Card user={deck[0]} deck={deck} setDeck={setDeck} />
+            : <div className="deck__no-matches"><p>No maches left.</p></div>
+          }
         </>
     )
 }

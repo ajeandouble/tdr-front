@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import keys from '../config/keys';
+import getAge from 'get-age';
 const { server_url } = keys;
 
-const Cards = (props) => {
-    console.log(Cards.name)
-    const { deck, setDeck} = props;
+const Card = ({user, deck, setDeck }) => {
+    console.log(Card.name)
   
     const submitLike = (user_id) => {
       fetch(`${server_url}/api/sendLike`, {
@@ -31,10 +31,9 @@ const Cards = (props) => {
           console.log(deck);
           const newDeck = [...deck];
           const index = newDeck.findIndex((user) => user.profile.user_id === user_id);
-          newDeck[index].liked = true;
+          newDeck.splice(index, 1);
           console.log(newDeck);
           setDeck(newDeck);
-          console.log(newDeck === deck);
           console.log(responseJSON);
         })
         .catch(error => {
@@ -42,26 +41,25 @@ const Cards = (props) => {
         });
     };
   
+  let profilePic = user.profile.pics && user.profile.pics.__proto__ === Array.prototype
+    && user.profile.pics[0] ? user.profile.pics[0] : null;
+   const { displayName, birthDate, bio } = user.profile;
   
     return (
-      <>
-      <h3>Deck:</h3>
-      {deck && deck[0] ? 
-        deck.map((user) =>
-        <div class={`card ${user.liked ? 'liked' : ''}`}>
-          <span>{JSON.stringify(user)}</span>
-          <div>{user.profile.pics[0]}</div>
-          <div>{user.profile.displayName}</div>  
-          <div>{user.profile.birthDate}</div>
-          <div>{user.profile.user_id}</div>
+    <React.Fragment>
+      <div className="user-profile">
+        <article className="user-profile__article">
+          <img className="user-profile__img" src={profilePic}  />
+          <h4 className="user-profile__display-name">{displayName}</h4>
+          <h4 className="user-profile__age">{getAge(birthDate)}</h4>
+          <hr />
+          <p className="user-profile__bio">{bio}</p>
+          <br /> {/* TODO: Replace by setting <p> as display: block? */}
           <button class='card--like' onClick={() => submitLike(user.profile.user_id)}>Like</button>
-          <br />---
-        </div>)
-        :
-        <p>No profiles available</p>
-      }
-      </>
-    )
+        </article>
+      </div>
+    </React.Fragment>
+    );
   }
 
-export default Cards;
+export default Card;

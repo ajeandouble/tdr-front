@@ -371,26 +371,34 @@ body {
 /* Chat */
 
 .message {
-  background-color: aliceblue;
   width: 99%;
+  margin-bottom: 1rem;
+  
 }
 
 .message.sent {
-  background-color: aquamarine;
   text-align: right;
+  background-color: var(--light-grey);
+  width: 99%;
+  padding-right: 1%;
+}
+
+.message.sent__span {
+
 }
 
 .message.received {
   background-color: antiquewhite;
+  padding-left: 1%;
   float: right;
 }
 
 .chat-box__messages {
-  background-color: var(--warning);
   width: 80%;
   overflow: auto;
   max-height: 93vh;
   overflow-wrap: break-word;
+  margin-bottom: 2rem;
 }
 
 ::-webkit-scrollbar {
@@ -462,6 +470,16 @@ body {
   margin-left: 1rem;
 }
 
+/* Deck */
+
+.deck__no-matches {
+  margin: 15rem auto 0 auto;
+}
+
+.deck__no-matches p {
+  text-align: center;
+  font-weight: 600;
+}
 /* Loading */
 
 .loading {
@@ -470,8 +488,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-image: linear-gradient(to bottom right, var(--red), var(--violet));
+  opacity: 1.0; /* Maybe add transparency over the interface */
   text-align: center;
   padding-top: 40vh;
   z-index: 9999;
 }
+
+.loading__animation {
+  width: 10rem;
+  height: 10rem;
+}
+
