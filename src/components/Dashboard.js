@@ -6,7 +6,7 @@ import Chat from './Chat';
 import keys from '../config/keys';
 import Loading from './Loading';
 import getAge from 'get-age';
-const { server_url } = keys;
+const { websocket_url, server_url } = keys;
 
 const RegisterActiveUserProfile = (props) => {
   const [state, setState] = useState({
@@ -197,7 +197,7 @@ const Dashboard = () => {
 
     useEffect(() => {
       if (!socket) {
-        const newSocket = new WebSocket('ws://localhost:8080'); 
+        const newSocket = new WebSocket(`${websocket_url}`); 
         setSocket(newSocket);
 
         newSocket.addEventListener('message', function (event) {
