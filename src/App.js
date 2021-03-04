@@ -8,7 +8,7 @@ import Dashboard from './components/Dashboard';
 import keys from './config/keys';
 import { PrivateRoute } from './config/auth';
 
-const { server_url } = keys;
+const { server_url, websocket_url } = keys;
 
 function NotFound() {
   return (
@@ -19,7 +19,7 @@ function NotFound() {
 }
 
 function App() {
-  console.log(App.name, server_url);
+  console.log(App.name, server_url, websocket_url);
   console.log(process.env);
 
   console.log(document.cookie)
