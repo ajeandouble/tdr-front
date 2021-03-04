@@ -51,7 +51,7 @@ export default function Chat({
             <p className="chat-profile__bio">{bio}</p>
           </div>
           <div className="chat-box">
-            {/* <div className="chat-box__messages">
+            <div className="chat-box__messages">
             {messages.get(match.user_id) ? (
                 messages.get(match.user_id).map((value) => (
                   <div className={`message ${value.type}`}>
@@ -63,8 +63,8 @@ export default function Chat({
               ) : (
                 <></>
               )}
-            </div> */}
-            {/* <input
+            </div>
+            <input
               className="chat-box__input"
               value={input[match.user_id]}
               onChange={(event) => handleInput(event, match.user_id)}
@@ -74,7 +74,7 @@ export default function Chat({
               onClick={(event) => sendMessage(event, match)}
             >
               Send
-            </button> */}
+            </button>
           </div>
         </>
       )}
