@@ -5,10 +5,10 @@ import './App.css';
 import Home from './components/Home';
 import Login from  './components/Login';
 import Dashboard from './components/Dashboard';
-import keys from './config/keys'
-import { PrivateRoute } from './config/auth's
+import keys from './config/keys';
+import { PrivateRoute } from './config/auth';
 
-const { server_url } = keys
+const { server_url } = keys;
 
 function NotFound() {
   return (
