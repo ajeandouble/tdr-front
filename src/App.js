@@ -6,8 +6,7 @@ import Home from './components/Home';
 import Login from  './components/Login';
 import Dashboard from './components/Dashboard';
 import keys from './config/keys'
-import { PrivateRoute } from './config/auth'
-import Loading from './components/Loading';
+import { PrivateRoute } from './config/auth's
 
 const { server_url } = keys
 
@@ -22,10 +21,6 @@ function NotFound() {
 function App() {
   console.log(App.name, server_url);
   console.log(process.env);
-
-  useEffect(async () => {
-      console.log(App.name, 'useEffect')
-  }, []);
 
   console.log(document.cookie)
   return (

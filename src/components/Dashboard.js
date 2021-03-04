@@ -177,43 +177,43 @@ const Dashboard = () => {
     function sendMessage( event, match) {
       event.preventDefault();
   
-      const message = input[match.user_id]
-      if (!message.length)
-        return ;
-      const payload ={message: message, destination: match.user_id}
-      if (socket) {
-        socket.send(JSON.stringify(payload));
-        const newMessages = new Map(messages);
-        if (!newMessages.get(match.user_id)) {
-          newMessages.set(match.user_id, [{type: 'sent', message: message}])
-        }
-        else {
-          const messagesFrom = newMessages.get(match.user_id);
-          newMessages.set(match.user_id, [...messagesFrom, {type: 'sent', message: message}]);
-        }
-        setMessages(messages => newMessages);
-      }
+      // const message = input[match.user_id]
+      // if (!message.length)
+      //   return ;
+      // const payload ={message: message, destination: match.user_id}
+      // if (socket) {
+      //   socket.send(JSON.stringify(payload));
+      //   const newMessages = new Map(messages);
+      //   if (!newMessages.get(match.user_id)) {
+      //     newMessages.set(match.user_id, [{type: 'sent', message: message}])
+      //   }
+      //   else {
+      //     const messagesFrom = newMessages.get(match.user_id);
+      //     newMessages.set(match.user_id, [...messagesFrom, {type: 'sent', message: message}]);
+      //   }
+      //   setMessages(messages => newMessages);
+      // }
     }
 
     useEffect(() => {
-      if (!socket) {
-        const newSocket = new WebSocket(`${websocket_url}`); 
-        setSocket(newSocket);
+      // if (!socket) {
+      //   const newSocket = new WebSocket(`${websocket_url}`); 
+      //   setSocket(newSocket);
 
-        newSocket.addEventListener('message', function (event) {
-          const data = JSON.parse(event.data);
-          console.log('Message from server ', data);
+      //   newSocket.addEventListener('message', function (event) {
+      //     const data = JSON.parse(event.data);
+      //     console.log('Message from server ', data);
 
-          setMessages(messages => {
-            const messagesFrom = messages.get(data.from);
-            const newMessages = new Map(messages); //
-              if (!messagesFrom) newMessages.set(data.from, [{type: 'received', message: data.message}]);
-              else  newMessages.set(data.from, [...messagesFrom, {type: 'received', message: data.message}]);
-            console.log(newMessages)
-            return newMessages
-          });
-        });
-      }
+      //     setMessages(messages => {
+      //       const messagesFrom = messages.get(data.from);
+      //       const newMessages = new Map(messages); //
+      //         if (!messagesFrom) newMessages.set(data.from, [{type: 'received', message: data.message}]);
+      //         else  newMessages.set(data.from, [...messagesFrom, {type: 'received', message: data.message}]);
+      //       console.log(newMessages)
+      //       return newMessages
+      //     });
+      //   });
+      // }
 
     }, []);
   
