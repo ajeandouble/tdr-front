@@ -53,23 +53,29 @@ const RegisterActiveUserProfile = (props) => {
 
   }
   return (
-    <form className="registerProfile">
-      <label>
-        <input type="text" onChange={handleChange} name="displayName" />
-        <input type="date" onChange={handleChange} name="birthDate" />
-        <select name="gender" value={state.gender} onChange={handleChange}>
-          <option name="gender" value="Male">Male</option>
-          <option name="gender" value="Female">Female</option>
-        </select>
-        <select name="interest" value={state.interests} onChange={handleChange}>
-          <option name="interest" value="Male">Male</option>
-          <option name="interest" value="Female">Female</option>
-        </select>
-        <input type="text" onChange={handleChange} name="bio" />
-        <button value="submit" onClick={(e) => { e.preventDefault(); handleSubmit(e)}} />
-        {state.gender}, born {state.birthDate} interested in {state.interests}
-      </label>
-    </form>
+    <div className="register-active-user__container">
+      <form className="register">
+        <label>
+          <label className="register__display-name__label">Name:</label>
+          <input className="register__display-name__input" type="text" onChange={handleChange} name="displayName" className="register__display-name__input" />
+          <input className="register__date" type="date" onChange={handleChange} name="birthDate" />
+          <select className="register__gender__select" name="gender" value={state.gender} onChange={handleChange}>
+            <option name="gender" value="Male">Male</option>
+            <option name="gender" value="Female">Female</option>
+          </select>
+          <label className="register__interest">Interrests:</label>
+          <select className="register__interest__select" name="interest" value={state.interests} onChange={handleChange}>
+            <option name="interest" value="Male">Male</option>
+            <option name="interest" value="Female">Female</option>
+          </select>
+          <label className="register__bio__label">Bio:</label>
+          <input className="register__bio__input" type="text" onChange={handleChange} name="bio" />
+          <button className="register__button button--submit" value="submit" onClick={(e) => { e.preventDefault(); handleSubmit(e)}}>
+            Submit
+          </button>
+        </label>
+      </form>
+    </div>
   )
 }
 
@@ -98,6 +104,8 @@ function ActiveUserProfile({ activeUserInfo }) {
 }
 
 const Dashboard = () => {
+  // Deck hooks
+  const [deck, setDeck] = useState([]);
   // Profile hooks
   const [activeUserProfile, setActiveUserProfile] = useState(undefined)
   const [registered, setRegistered] = useState(undefined);
@@ -158,6 +166,7 @@ const Dashboard = () => {
               if (responseJSON.success === false) {
                 throw Error(responseJSON.message)
               }
+              console.log(responseJSON.message);
               const { data } = responseJSON;
               const newInput = {}
               console.log(data)
@@ -172,7 +181,7 @@ const Dashboard = () => {
               console.log(error);
             });
     }
-    , []);
+    , [deck]);
 
     function sendMessage( event, match) {
       event.preventDefault();
@@ -260,12 +269,9 @@ const Dashboard = () => {
                     <MatchesList matches={matches} messages={messages} />
                   </div>
                   <div className="dashboard__right-pan">
-                    <Deck />
+                    <Deck deck={deck} setDeck={setDeck} />
                   </div>
-                  <span>/deck</span>
                 </Route>
-                
-
               </React.Fragment>  :
               registered === undefined ? <Loading /> : null}
             {registered === false ? <RegisterActiveUserProfile setRegistered={setRegistered} /> : null}

@@ -4,11 +4,11 @@ import Matches from './Matches';
 import Card from './Card';
 import keys from '../config/keys';
 const { server_url } = keys;
+import getAge from "get-age";
 
 
-const Deck = () => {
+const Deck = ({ deck, setDeck}) => {
     console.log(Deck.name)
-    const [deck, setDeck] = useState([]);
     const [likes, setLikes] = useState([]);
     const [matches, setMatches] = useState([]);
 
@@ -28,15 +28,16 @@ const Deck = () => {
             },
           })
             .then(response => {
-              if (response.status !== 201 && response.status !== 401) {
+              if (response.status !== 201 && response.status !== 204) {
                 throw Error('Can\'t get deck');
               }
               return response.json();
             })
             .then(responseJSON => {
               if (responseJSON.success === false) {
-                throw Error(responseJSON.message)
+                throw Error(JSON.stringify(responseJSON.message));
               }
+              console.log(responseJSON.message);
               const { data } = responseJSON;
               const newDeck = data.map(user_infos => { return {profile: user_infos, liked: false } });
               console.log(data, newDeck);
@@ -53,8 +54,23 @@ const Deck = () => {
     return (
         <>
           {deck[0] ?
+          <>
             <Card user={deck[0]} deck={deck} setDeck={setDeck} />
-            : <div className="deck__no-matches"><p>No maches left.</p></div>
+            {deck[1] ?
+                <div className="user-profile"  >
+                  <article className="user-profile__article zIndex1"
+                    style={{ backgroundImage: `url(${deck[1].profile.pics[0]})` }}
+                  >
+                    <h4 className="user-profile__display-name">{deck[1].profile.displayName}</h4>
+                    <h4 className="user-profile__age">{getAge(deck[1].profile.birthDate)}</h4>
+                    <p className="user-profile__bio">{deck[1].profile.bio}</p>
+                    <br />
+                  </article>
+                </div>
+              : null
+            }
+          </>
+            : <div className="deck__no-matches"><p>No profiles left.</p></div>
           }
         </>
     )

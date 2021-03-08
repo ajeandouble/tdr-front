@@ -210,6 +210,72 @@ body {
   text-align: center;
 }
 
+/* Register */
+
+.register-active-user__container {
+  background-image: linear-gradient(to bottom right, var(--red), var(--violet));
+  width: 100%;
+  height: 100vh;
+  padding-top: 15rem;
+}
+
+.register {
+  border: 1px solid var(--light-grey);
+  width: 40rem;
+  background-color: white;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem;
+  display: block;
+}
+
+.register__display-name__label {
+  width: 100%;
+  display: inline-block;
+  background-color: yellow;
+}
+
+.register__display-name__input {
+  width: 70%;
+  display: inline-block;
+  background-color: red;
+}
+
+.register__date {
+  display: inline-block;
+  background-color: blue;
+  margin-right: 100%;
+}
+
+.register__gender__select {
+  background-color: lightgreen;
+  margin-right: 100%;
+}
+
+.register__interest__label {
+  margin-bottom: 1rem;
+}
+
+.register__interest__select {
+  margin-right: 100%;
+  margin-bottom: 1rem;
+}
+
+.register__bio__label {
+  margin-right: 100%;
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
+.register__bio__input {
+  height: 7.5rem;
+  margin-bottom: 1rem;
+}
+
+.register__button {
+  margin-right: 100%;
+}
 /* DASHBOARD */
 
 .dashboard__left-pan {
@@ -218,13 +284,13 @@ body {
   width: 25rem;
   height: 100vh;
   float: left;
-  background-image: linear-gradient(to right, var(--white), rgba(0, 0, 0, 0.05));
 }
 
 .dashboard__right-pan {
-  margin-left: 28rem;
+  margin-left: 25.2rem;
+  height: 100vh;
   position: relative;
-  padding: 2rem;
+  background-color: #F5F7FA;
 }
 
 .dashboard__left-pan__top {
@@ -316,50 +382,82 @@ body {
 
 .user-profile {
   position: relative;
-  top: 5rem;
+  top: 4.5vh;
 }
 
 .user-profile__article {
-  border-radius: 5px;
+  transition: 0.1s;
+  position: relative;
+  border-radius: 8px;
   border: 1px solid var(--light-grey);
-  width: 50rem;
+  width: 400px;
+  height: 570px;
   margin-left: auto;
   margin-right: auto;
   word-wrap: break-word;
-  padding: 1.25rem;
   box-shadow: 2px 2px 11px -5px rgba(0,0,0,0.75);
+  user-select: none;
+  background-size: 100% 100%;
 }
 
-.user-profile__img {
-  max-width: 100%; 
-  border-radius: 3px;
-}
 
 .user-profile__display-name {
   font-weight: 600;
   display: inline-block;
-  margin-top: 1rem;
+  color: white;
+  position: relative;
+  top: 410px;
+  left: 10px;
 }
 
 .user-profile__age {
-  display: inline;
-  margin-left: 0.75rem;
+  font-weight: 400;
+  display: inline-block;
+  color: white;
+  position: relative;
+  top: 410px;
+  left: 20px;
 }
 
 .user-profile__bio {
+  font-weight: 400;
   display: inline-block;
-  margin-top: 0.5rem;
+  color: white;
+  position: relative;
+  top: 400px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+  width: 380px;
+  height: 100px;
+  border-radius: 3px;
+  padding: 4px;
 }
 
-.user-profile__article hr {
-  border-top: 1px solid var(--light-grey);
+.user-profile__buttons {
+  margin-left: auto; margin-right: auto;
+  width: 400px;
+  margin-top: 1rem;
+}
+.user-profile__like, .user-profile__pass {
+  border: 5px var(--light-grey);
+  float: left;
+  padding: 10px;
+  font-size: 3rem;
+  border-radius: 50%;
+  transition: 0.15s;
 }
 
+.user-profile__pass { float: right; }
+
+.user-profile__like:hover, .user-profile__pass:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
 
 /* CARD */
 
 .card {
-  border: 3px solid lightblue;
+  border: 3px solid rgb(0, 141, 192);
   border-radius: 2px;
   background-color: yellow;
 }
@@ -500,3 +598,15 @@ body {
   height: 10rem;
 }
 
+/* Misc */
+
+.zIndex1 {
+  z-index: 1; 
+  position: relative;
+  top: -582px;
+}
+
+.zIndex5000 {
+  z-index: 5000;
+  
+}
