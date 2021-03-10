@@ -84,6 +84,7 @@ function ActiveUserProfile({ activeUserInfo }) {
     && activeUserInfo.pics[0] ? activeUserInfo.pics[0] : null;
 
   const { displayName, birthDate, bio } = activeUserInfo;
+  
 
   return (
     <React.Fragment>
@@ -91,12 +92,14 @@ function ActiveUserProfile({ activeUserInfo }) {
         <a className="button--logout dashboard__logout" href={`${server_url}/auth/logout`}>Logout</a>
       </div>
       <div className="user-profile">
-        <article className="user-profile__article">
-          <img className="user-profile__img" src={profilePic}  />
+        <article
+          className="user-profile__article active-user"
+          style={{ backgroundImage: `url(${profilePic})` }}
+        >
           <h4 className="user-profile__display-name">{displayName}</h4>
           <h4 className="user-profile__age">{getAge(birthDate)}</h4>
-          <hr />
           <p className="user-profile__bio">{bio}</p>
+          <br />
         </article>
       </div>
     </React.Fragment>
@@ -204,6 +207,60 @@ const Dashboard = () => {
         setMessages(messages => newMessages);
       }
     }
+
+    // Fetch saved messages
+    useEffect(() => {
+      if (!activeUserProfile || !activeUserProfile.user_id)
+        return ;
+      console.log('Fetching messages...');
+      fetch(`${server_url}/api/fetchMessages`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true
+        },
+      })
+        .then(response => {
+          if (response.status !== 201) {
+            throw Error('Can\'t fetch messages');
+          }
+          return response.json();
+        })
+        .then(responseJSON => {
+          if (responseJSON.success === false) {
+            throw Error(responseJSON.message)
+          }
+          console.log(responseJSON.message);
+          const {data} = responseJSON;
+          const {user_id} = activeUserProfile;
+
+          setMessages(messages => {
+            const newMessages = new Map(messages);
+            data.forEach((msg) => {
+              const id = msg.from === user_id ? msg.to : msg.from;
+              const type = msg.from === user_id ? 'sent': 'received';
+              
+              if (!newMessages.get(id)) {
+                newMessages.set(id, [{type: type, message: msg.message}]);
+              }
+              else {
+                const messagesFrom = newMessages.get(id);
+                newMessages.set(id, [...messagesFrom, {type: type, message: msg.message}]);
+              }
+            });
+
+            return newMessages;
+          });
+
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+    }, [activeUserProfile]);
 
     useEffect(() => {
       if (!socket) {

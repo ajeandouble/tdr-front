@@ -41,6 +41,13 @@ export default function Chat({
     console.log(event.target.value, user_id);
   }
 
+  function clearInput(event, user_id) {
+    const newInput = Object.assign({}, input);
+    newInput[user_id] = '';
+    setInput(newInput);
+    console.log(event.target.value, user_id);
+  }
+
   useEffect(() => {
     if (readMessages[match.user_id]) {
       setReadMessages(readMessages => {
@@ -53,6 +60,7 @@ export default function Chat({
       });
     }
   }, [readMessages, id]);
+
 
   return (
     <React.Fragment>
@@ -79,11 +87,13 @@ export default function Chat({
                 autoFocus
                 className="chat-box__input"
                 value={input[match.user_id]}
+                placeholder={'What\'s on your mind...'}
                 onChange={(event) => handleInput(event, match.user_id)}
+                onKeyDown={(event) => { if(event.keyCode === 13) { sendMessage(event, match); clearInput(event, match.user_id); }}}
               ></textarea>
               <button
                 className="chat-box__submit button--submit"
-                onClick={(event) => sendMessage(event, match)}
+                onClick={(event) => { sendMessage(event, match); clearInput(event, match.user_id); }}
               >
                 Send
               </button>
@@ -94,6 +104,7 @@ export default function Chat({
             <img className="chat-profile__img" src={profilePic} />
             <h4 className="chat-profile__display-name">{displayName}</h4>
             <h4 className="chat-profile__age">{getAge(birthDate)}</h4>
+            <p className="chat-profile__bio">{bio}</p>
           </div>
         </>
       )}

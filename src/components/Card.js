@@ -90,6 +90,7 @@ const Card = ({ user, deck, setDeck }) => {
     console.log(dragCoordinates.x, 'x')
     articleRef.current.addEventListener('mousemove', startDrag);
     articleRef.current.addEventListener('mouseup', stopDrag);
+    articleRef.current.addEventListener('mouseout', stopDrag)
   }
   function startDrag({ clientX }) {
     const translation = clientX - dragCoordinates.x;
@@ -97,18 +98,21 @@ const Card = ({ user, deck, setDeck }) => {
     if (Math.abs(translation) > 300)  return stopDrag(translation);
 
     articleRef.current.style.left = translation + 'px';
+    // articleRef.current.style.transform = `rotate(${Math.floor(translation / 5)}deg)`;
     console.log(dragCoordinates.x, 'yo accessed twice closure or wtf', clientX)
     console.log((clientX - dragCoordinates.x) + 'px');
   }
   function stopDrag(translation) {
-    if (translation < 0) {
+    if (translation < -300) {
       submitPass(user.profile.user_id);
     }
-    else {
+    else if (translation > 300) {
       submitLike(user.profile.user_id);
     }
+    articleRef.current.style.left = '0px';
     articleRef.current.removeEventListener('mousemove', startDrag);
     articleRef.current.removeEventListener('mouseup', stopDrag);
+    articleRef.current.removeEventListener('mouseout', stopDrag);
     dragCoordinates.x, dragCoordinates.y = 0, 0;
 
   }

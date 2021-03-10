@@ -58,6 +58,9 @@ body {
   font-size: 1.8rem;
 }
 
+button {
+  outline: none;
+}
 .button--default {
   background-color: var(--white);
   font-size: 1.75rem;
@@ -74,7 +77,7 @@ body {
 
 .button--submit {
   background-color: var(--charcoal);
-  color: var(--light-grey);   
+  color: white;
   border: 0;
   font-size: 1.75rem;
   padding: 0.3rem 0.9rem 0.3rem 0.9rem;
@@ -90,7 +93,8 @@ body {
 
 .button--logout {
   background-color: var(--charcoal);
-  color: var(--light-grey);   
+  color: white;
+  text-decoration: none;
   border: 0;
   font-size: 1.75rem;
   padding: 0.3rem 0.9rem 0.3rem 0.9rem;
@@ -109,6 +113,17 @@ body {
 .button--warning {
 
 }
+
+.button--facebook, .button--facebook:visited, .button-facebook:hover {
+  text-decoration: none;
+  font-weight: 600;
+  color: #3b5998;
+}
+
+.button--facebook:hover {
+  font-weight: 800;
+}
+
 
 /* Landing page */
 
@@ -163,7 +178,7 @@ body {
 
 .login--card {
   background-color: white;
-  border-radius: 3px;
+  border-radius: 7px;
   top: 10vh;
   padding: 3rem;
   position: relative;
@@ -183,12 +198,15 @@ body {
 
 }
 .login--card form label {
+  display: inline-block;
   padding-right: 2rem;
+  margin-bottom: 0.5rem;
   color: var(--charcoal);
 }
 
 .login--card form input[type='text'], .login--card form input[type='password'] {
   border: 1.5px solid var(--light-grey);
+  padding-left: 0.5rem;
   background: transparent;
   margin: 0;
   font-size: 1.6rem;
@@ -201,7 +219,10 @@ body {
   width: 99%;
   height: 3rem;
   margin-bottom: 0.5rem;
+  outline: none;
 }
+
+
 
 .login--card .submit__input:hover {
   cursor: pointer;
@@ -342,8 +363,9 @@ body {
   display: block ;
 }
 
-.matches-list__match:hover {
-  background-color: white;
+.matches-list__match:hover, .matches-list__match:active, .matches-list__match.active-match {
+  background-color: #F5F7FA;
+  font-weight: 600;
   z-index: 0;
   width: 24rem;
   height: 7rem;
@@ -351,6 +373,11 @@ body {
   position: relative;
   margin-left: -1rem;
   padding-left: 1rem;
+  border-right: 4px solid var(--orange);
+}
+
+.matches-list__match.active-match {
+  background-color: rgba(0, 0, 0, 0.1)
 }
 
 .matches-list__img {
@@ -361,7 +388,7 @@ body {
   transition: 0.125s;
 }
 
-.matches-list__img:hover {
+.matches-list__match:hover .matches-list__img {
   transform: scale(1.1);
   cursor: pointer;
 }
@@ -419,6 +446,13 @@ a:visited.matches-list__link {
   background-size: 100% 100%;
 }
 
+.user-profile__article:hover {
+  cursor: move;
+}
+
+.user-profile__article:hover.active-user {
+  cursor: default;
+}
 
 .user-profile__display-name {
   font-weight: 600;
@@ -445,11 +479,13 @@ a:visited.matches-list__link {
   position: relative;
   top: 400px;
   left: 10px;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.25);
   width: 380px;
   height: 100px;
-  border-radius: 3px;
-  padding: 4px;
+  border-radius: 6px;
+  margin-top: 1.25rem;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 .user-profile__buttons {
@@ -602,13 +638,17 @@ a:visited.matches-list__link {
 }
 .chat-profile__age {
   display: inline;
-  margin-left: 1.25rem; 
+  margin-left: 0.75rem; 
 }
 
 .chat-profile__bio {
-  display: inline;
-  color: red;
-
+  box-sizing: border-box;
+  display: block;
+  margin: 2% 2% 0 2%;
+  padding: 2%;
+  width: 96%;
+  font-weight: 200;
+  font-style: italic;
 }
 
 /* Deck */
@@ -641,6 +681,19 @@ a:visited.matches-list__link {
   height: 10rem;
 }
 
+.loading-card {
+  
+  border-radius: 7px;
+}
+
+.loading-card__animation {
+  border-radius: 7px;
+  height: 20%;
+  width: 50%;
+  position: relative;
+  left: 35%;
+  color: red;
+}
 /* Misc */
 
 .zIndex1 {
@@ -652,4 +705,13 @@ a:visited.matches-list__link {
 .zIndex5000 {
   z-index: 5000;
   
+}
+
+.no-profiles {
+  background-color: var(--warning);
+  padding-top: 10rem;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  box-sizing: border-box;
 }
