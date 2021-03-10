@@ -1,6 +1,7 @@
 import getAge from "get-age";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { useRef, useEffect } from "react";
 
 export default function Chat({
   matches,
@@ -9,7 +10,10 @@ export default function Chat({
   setInput,
   setMessages,
   sendMessage,
+  readMessages,
+  setReadMessages,
 }) {
+  const messagesBox = useRef();
   console.log(Chat.name);
   const { id } = useParams();
   const match = matches ? matches.find((m) => m.user_id == id) : undefined;
@@ -37,21 +41,27 @@ export default function Chat({
     console.log(event.target.value, user_id);
   }
 
+  useEffect(() => {
+    if (readMessages[match.user_id]) {
+      setReadMessages(readMessages => {
+        const newReadMessages = Object.assign({}, readMessages);
+        newReadMessages[match.user_id] = 0;
+
+        console.log(match.user_id, 'new message or switch id', readMessages, newReadMessages);
+
+        return newReadMessages;
+      });
+    }
+  }, [readMessages, id]);
+
   return (
     <React.Fragment>
       {match === undefined ? (
-        <span>Match doesn't exist</span>
+        <span>Match doesn&apost exist</span>
       ) : (
         <>
-          <div className="chat-profile">
-            <img className="chat-profile__img" src={profilePic} />
-            <h4 className="chat-profile__display-name">{displayName}</h4>
-            <h4 className="chat-profile__age">{getAge(birthDate)}</h4>
-            <hr />
-            <p className="chat-profile__bio">{bio}</p>
-          </div>
-          <div className="chat-box">
-            <div className="chat-box__messages">
+          <div className="chat__left">
+            <div className="chat-box__messages" ref={messagesBox}>
             {messages.get(match.user_id) ? (
                 messages.get(match.user_id).map((value) => (
                   <div className={`message ${value.type}`}>
@@ -64,17 +74,26 @@ export default function Chat({
                 <></>
               )}
             </div>
-            <input
-              className="chat-box__input"
-              value={input[match.user_id]}
-              onChange={(event) => handleInput(event, match.user_id)}
-            ></input>
-            <button
-              className="chat-box__submit button--submit"
-              onClick={(event) => sendMessage(event, match)}
-            >
-              Send
-            </button>
+            <div className="chat__left__bottom">
+              <textarea
+                autoFocus
+                className="chat-box__input"
+                value={input[match.user_id]}
+                onChange={(event) => handleInput(event, match.user_id)}
+              ></textarea>
+              <button
+                className="chat-box__submit button--submit"
+                onClick={(event) => sendMessage(event, match)}
+              >
+                Send
+              </button>
+            </div>
+          </div>
+
+          <div className="chat__right">
+            <img className="chat-profile__img" src={profilePic} />
+            <h4 className="chat-profile__display-name">{displayName}</h4>
+            <h4 className="chat-profile__age">{getAge(birthDate)}</h4>
           </div>
         </>
       )}

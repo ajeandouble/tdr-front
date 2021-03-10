@@ -38,6 +38,7 @@ const Card = ({ user, deck, setDeck }) => {
         console.log(newDeck);
         setDeck(newDeck);
         console.log(responseJSON);
+        articleRef.current.style.left = '0px';
       })
       .catch((error) => {
         console.log(error);
@@ -75,6 +76,7 @@ const Card = ({ user, deck, setDeck }) => {
       console.log(newDeck);
       setDeck(newDeck);
       console.log(responseJSON);
+      articleRef.current.style.left = '0px';
     })
     .catch((error) => {
       console.log(error);
@@ -99,13 +101,12 @@ const Card = ({ user, deck, setDeck }) => {
     console.log((clientX - dragCoordinates.x) + 'px');
   }
   function stopDrag(translation) {
-    if (translation >= 0) {
+    if (translation < 0) {
       submitPass(user.profile.user_id);
     }
     else {
       submitLike(user.profile.user_id);
     }
-    articleRef.current.style.left = '0px';
     articleRef.current.removeEventListener('mousemove', startDrag);
     articleRef.current.removeEventListener('mouseup', stopDrag);
     dragCoordinates.x, dragCoordinates.y = 0, 0;
@@ -135,16 +136,16 @@ const Card = ({ user, deck, setDeck }) => {
         </article>
         <div className="user-profile__buttons">
           <button
-              className="user-profile__like"
-              onClick={() => submitLike(user.profile.user_id)}
-            >
-              💙
-            </button>
-            <button
               className="user-profile__pass"
               onClick={() => submitPass(user.profile.user_id)}
             >
               ❌
+            </button>
+            <button
+              className="user-profile__like"
+              onClick={() => submitLike(user.profile.user_id)}
+            >
+              💙
             </button>
         </div>
       </div>

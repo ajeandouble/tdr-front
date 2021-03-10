@@ -7,10 +7,20 @@ const { server_url } = keys;
 import getAge from "get-age";
 
 
-const Deck = ({ deck, setDeck}) => {
+function NoProfilesLeft({ msg }) {
+  return (
+    <div className="user-profile"  >
+      <article className="user-profile__article">
+        <p>{msg ? msg : ''}</p>
+      </article>
+    </div>
+  );
+}
+function Deck({ deck, setDeck}) {
     console.log(Deck.name)
     const [likes, setLikes] = useState([]);
     const [matches, setMatches] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     console.log(deck);
     console.log(matches);
@@ -42,7 +52,7 @@ const Deck = ({ deck, setDeck}) => {
               const newDeck = data.map(user_infos => { return {profile: user_infos, liked: false } });
               console.log(data, newDeck);
               setDeck(newDeck);
-              newDeck.forEach(user => console.log(user.profile.displayName))
+              setLoading(false);
             })
             .catch(error => {
               console.log(error);
@@ -67,10 +77,13 @@ const Deck = ({ deck, setDeck}) => {
                     <br />
                   </article>
                 </div>
-              : null
+              : <div className="user-profile" >
+                  <article className="user-profile__article zIndex1">
+                  </article>
+                </div>
             }
           </>
-            : <div className="deck__no-matches"><p>No profiles left.</p></div>
+            : <NoProfilesLeft msg={loading ? 'Loading' : 'No profiles left'} />
           }
         </>
     )

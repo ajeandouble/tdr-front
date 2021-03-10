@@ -117,6 +117,7 @@ const Dashboard = () => {
   const [socket, setSocket] = useState(null);
   const [messages, setMessages] = useState(new Map());
   const [input, setInput] = useState({});
+  const [readMessages, setReadMessages] = useState({});
 
     useEffect(() => {
       fetch(`${server_url}/api/userInfo`, {
@@ -218,8 +219,22 @@ const Dashboard = () => {
             const newMessages = new Map(messages); //
               if (!messagesFrom) newMessages.set(data.from, [{type: 'received', message: data.message}]);
               else  newMessages.set(data.from, [...messagesFrom, {type: 'received', message: data.message}]);
-            console.log(newMessages)
+            
             return newMessages
+          });
+
+          setReadMessages(readMessages => {
+            const user_id = data.from;
+            const newReadMessages = Object.assign({}, readMessages);
+            console.log('newReadMessages=', newReadMessages, user_id);
+            if (!newReadMessages[user_id]) {
+              newReadMessages[user_id] = 1;
+            }
+            else {
+              newReadMessages[user_id]++;
+              console.log('i++')
+            }
+            return newReadMessages;
           });
         });
       }
@@ -250,12 +265,20 @@ const Dashboard = () => {
                       <Link className="dashboard__left-pan__top__link" to="/dashboard/profile">Profile</Link>
                       <Link className="dashboard__left-pan__top__link" to="/dashboard/deck">Deck</Link>
                     </div>
-                  <MatchesList matches={matches} messages={messages} />
-                    {/* <Profile /> */}
+                  <MatchesList matches={matches} messages={messages} readMessages={readMessages} setReadMessages={setReadMessages} />
                   </div>
                   <div className="dashboard__right-pan">
                     {matches ? 
-                      <Chat matches={matches} messages={messages} input={input} setInput={setInput} setMessages={setMessages} sendMessage={sendMessage}/>
+                      <Chat
+                        matches={matches}
+                        messages={messages}
+                        input={input}
+                        setInput={setInput}
+                        setMessages={setMessages}
+                        sendMessage={sendMessage}
+                        readMessages={readMessages}
+                        setReadMessages={setReadMessages}
+                      />
                       : <Loading />}
                     </div>
                 </Route>
@@ -266,7 +289,7 @@ const Dashboard = () => {
                     <div className="dashboard__left-pan__top">
                       <Link className="dashboard__left-pan__top__link" to="/dashboard/profile">Profile</Link>
                     </div>
-                    <MatchesList matches={matches} messages={messages} />
+                    <MatchesList matches={matches} messages={messages} readMessages={readMessages} setReadMessages={setReadMessages} />
                   </div>
                   <div className="dashboard__right-pan">
                     <Deck deck={deck} setDeck={setDeck} />
