@@ -1,47 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
 import keys from "../config/keys";
 import getAge from "get-age";
+import axiosInstance from "../config/axios";
+
 const { server_url } = keys;
 
-const Card = ({ user, deck, setDeck }) => {
+function Card({ user, deck, setDeck }) {
+  const [itsAMatch, setItsAMatch] = useState(false);
   console.log(Card.name);
   const articleRef = useRef();
 
+
   const submitLike = (user_id) => {
-    fetch(`${server_url}/api/sendLike`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify({ user_id: user_id }),
-    })
-      .then((response) => {
-        if (response.status !== 201 && response.status !== 401) {
-          throw Error("Can't save like");
-        }
-        return response.json();
-      })
-      .then((responseJSON) => {
-        if (responseJSON.success === false) {
-          console.log(responseJSON);
-          throw new Error(responseJSON.message);
-        }
+    axiosInstance.post('/api/sendLike', {user_id: user_id })  
+      .then(res => {
+        console.log('sendLike res=', res)
+        if (res.status !== 201 || !res.data) throw new Error("Cant' save like")
+        const { success, message } = res.data;
+        if (!success)  throw new Error(message)
+        if (message === 'Match') setItsAMatch(true);
         console.log(deck);
         const newDeck = [...deck];
-        const index = newDeck.findIndex(
-          (user) => user.profile.user_id === user_id
-        );
+        const index = newDeck.findIndex((user) => user.profile.user_id === user_id);
         newDeck.splice(index, 1);
         console.log(newDeck);
         setDeck(newDeck);
-        console.log(responseJSON);
         articleRef.current.style.left = '0px';
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -126,6 +113,7 @@ const Card = ({ user, deck, setDeck }) => {
 
   return (
     <React.Fragment>
+      { itsAMatch ? <div className="its-a-match"><span>It's a match.</span><div className="cross" onClick={() => setItsAMatch(false)}>X</div></div> : <></> }
       <div className="user-profile zIndex5000">
         <article
           ref={articleRef}

@@ -511,6 +511,39 @@ a:visited.matches-list__link {
 
 /* CARD */
 
+.its-a-match {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50000;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.9);
+  text-align: center;
+}
+
+.its-a-match span {
+  color: var(--success);
+  font-style: italic;
+  font-weight: 800;
+  position: relative;
+  top: 30vh;
+  font-size: 5rem;
+}
+
+.its-a-match .cross {
+  position: fixed;
+  content: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa';
+  color: white;
+  right: 2.5vw;
+  top: 2.5vh;
+  font-weight: 800;
+  z-index: 250001;
+}
+
+.its-a-match .cross:hover { transform: scale(1.25); cursor: pointer; }
+
 .card {
   border: 3px solid rgb(0, 141, 192);
   border-radius: 2px;

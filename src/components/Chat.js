@@ -61,6 +61,11 @@ export default function Chat({
     }
   }, [readMessages, id]);
 
+  useEffect(() => {
+    var element = document.getElementById("chat-box");
+    element.scrollTop = element.scrollHeight;
+    console.log('messages_get=', messages.get(match.user_id));
+  }, [messages]);
 
   return (
     <React.Fragment>
@@ -69,7 +74,7 @@ export default function Chat({
       ) : (
         <>
           <div className="chat__left">
-            <div className="chat-box__messages" ref={messagesBox}>
+            <div className="chat-box__messages" id="chat-box" ref={messagesBox}>
             {messages.get(match.user_id) ? (
                 messages.get(match.user_id).map((value) => (
                   <div className={`message ${value.type}`}>
